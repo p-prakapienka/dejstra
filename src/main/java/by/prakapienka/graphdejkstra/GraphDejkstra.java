@@ -199,5 +199,6 @@ public class GraphDejkstra {
     public static void main(String[] args) throws IOException {
         new GraphDejkstra().run();
     }
+
 }
 
