@@ -3,8 +3,6 @@ package by.prakapienka.graphdejkstra;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ConsoleHelper {
 
@@ -38,21 +36,8 @@ public class ConsoleHelper {
         }
     }
 
-    //вывод полученной матрицы смежности
-    public static void printGraphMatrix(Graph graph) {
-        System.out.println();
-        for (int i = 0; i < graph.getVertexNumber(); i++) {
-            List<Integer> weights = graph.getGraphMatrix()[i];
-            for (int j = 0; j < graph.getVertexNumber(); j++) {
-                if (weights.get(j) != null) {
-                    System.out.print(weights.get(j) + " ");
-                } else {
-                    System.out.print(" - ");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
+    public static void writeString(String s) {
+        System.out.println(s);
     }
 
     //процедура восстановления кратчайшего пути по массиву предком

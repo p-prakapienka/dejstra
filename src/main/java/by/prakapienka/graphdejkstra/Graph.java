@@ -106,4 +106,44 @@ public class Graph {
         distance = new int[vertexNumber];
         Arrays.fill(distance, INF);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Graph)) return false;
+
+        Graph graph = (Graph) o;
+
+        if (getVertexNumber() != graph.getVertexNumber()) return false;
+        if (getEdgeNumber() != graph.getEdgeNumber()) return false;
+        return Arrays.equals(getGraphMatrix(), graph.getGraphMatrix());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getVertexNumber();
+        result = 31 * result + getEdgeNumber();
+        result = 31 * result + Arrays.hashCode(getGraphMatrix());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Graph{\n");
+        for (int i = 0; i < this.getVertexNumber(); i++) {
+            List<Integer> weights = this.getGraphMatrix()[i];
+            for (int j = 0; j < this.getVertexNumber(); j++) {
+                if (weights.get(j) != null) {
+                    stringBuilder.append(weights.get(j));
+                    stringBuilder.append(" ");
+                } else {
+                    stringBuilder.append(" - ");
+                }
+            }
+            stringBuilder.append("\n");
+        }
+        stringBuilder.append("}");
+        return stringBuilder.toString();
+    }
 }

@@ -9,7 +9,7 @@ public class TestMain {
     public static void main(String[] args) throws IOException {
         Graph graph = TestData.getTestGraph();
 
-        ConsoleHelper.printGraphMatrix(graph);
+        ConsoleHelper.writeString(graph.toString());
 
         GraphProcessor.process(graph, startVertex);
 
