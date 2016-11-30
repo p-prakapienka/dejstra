@@ -1,19 +1,20 @@
 package by.prakapienka.graphdejkstra;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class TestData {
 
-    public static Graph getTestGraph() {
-        //test data
-        int[][] testMatrix = {{-1, 10, 30, 50, 10},
-                              {-1, -1, -1, -1, -1},
-                              {-1, -1, -1, -1, 10},
-                              {-1, 40, 20, -1, -1},
-                              {10, -1, 10, 30, -1}};
-        int vertexNumber = 5;
-        int edgeNumber = 10;
-        int start = 0;
+    public static final List[] TEST_MATRIX = {
+            Arrays.asList(null,  10,   30,   50,   10 ),
+            Arrays.asList(null, null, null, null, null),
+            Arrays.asList(null, null, null, null,  10 ),
+            Arrays.asList(null,  40,   20,  null, null),
+            Arrays.asList( 10,  null,  10,   30,  null),
+    };
 
-        //test graph
+    public static Graph getTestGraph() {
+
         Graph graph = new Graph.Builder(5)
                 .edge(0, 1, 10)
                 .edge(0, 2, 30)
@@ -26,13 +27,6 @@ public class TestData {
                 .edge(4, 2, 10)
                 .edge(4, 3, 30)
                 .build();
-        //test preconditions
-        if (graph.getVertexNumber() != vertexNumber) {
-            throw new RuntimeException("Graph build failed - incorrect number of vertices.");
-        }
-        if (graph.getEdgeNumber() != edgeNumber) {
-            throw new RuntimeException("Graph build failed - incorrect number of edges.");
-        }
 
         return graph;
     }

@@ -4,69 +4,62 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Graph {
+/**
+ *  Root directed graph object. Contains a matrix of edge weights where row number
+ *  is an edge start vertex and column number is an edge end vertex. null means
+ *  there is no connection between vertices.
+ *
+ *  You cannot create a Graph object directly. Use nested builder class instead.
+ *
+ *  @author Paviel Prakapienka
+ */
+public final class Graph {
 
-    public final static int INF = Integer.MAX_VALUE / 2;
-
-    private final int vertexNumber; //количество вершин в орграфе
-    private int edgeNumber = 0; //количествое дуг в орграфе
+    private final int vertexNumber;
+    private int edgeNumber;
 
     private final List<Integer>[] graphMatrix;
-    /*
-    private ArrayList<Integer>[] adjacency; //список смежности
-    private ArrayList<Integer>[] weight; //вес ребра в орграфе
-    */
 
-    private boolean[] used; //массив для хранения информации о пройденных и не пройденных вершинах
-    private int[] distance; //массив для хранения расстояний от стартовой вершины
-    private int[] previous; //массив предков, необходимых для восстановления кратчайшего пути из стартовой вершины
-
-    {
-        /*
-        //инициализируем список смежности графа размерности vertexNumber
-        adjacency = new ArrayList[vertexNumber];
-        for (int i = 0; i < vertexNumber; i++) {
-            adjacency[i] = new ArrayList<>();
-        }
-        //инициализация списка весов ребер
-        weight = new ArrayList[vertexNumber];
-        for (int i = 0; i < vertexNumber; i++) {
-            weight[i] = new ArrayList<>();
-        }
-        */
-    }
-
+    /**
+     *  @return number of vertices (rows/columns in edge weights matrix). Edge weight
+     *  can have null value, means there is no connection between vertices.
+     */
     public int getVertexNumber() {
         return vertexNumber;
     }
 
+    /**
+     *  @return total of directed graph edges
+     */
     public int getEdgeNumber() {
         return edgeNumber;
     }
 
+    /**
+     *  @return edge weights matrix
+     */
     public List<Integer>[] getGraphMatrix() {
         return graphMatrix;
     }
 
-    public boolean[] getUsed() {
-        return used;
-    }
-
-    public int[] getDistance() {
-        return distance;
-    }
-
-    public int[] getPrevious() {
-        return previous;
-    }
-
+    /**
+     *  Builder class to create a Graph object.
+     */
     @SuppressWarnings("unchecked")
     public static class Builder {
         private final int vertexNumber;
         private int edgeNumber = 0;
         private List<Integer>[] graphMatrix;
 
+        /**
+         *  @param vertexNumber initial number of vertices. Must be greater than 1.
+         *  @throws IllegalArgumentException
+         */
         public Builder(int vertexNumber) {
+            if (vertexNumber < 2) {
+                throw new IllegalArgumentException(
+                        "Graph must have at least 2 vertices.");
+            }
             this.vertexNumber = vertexNumber;
             graphMatrix = new ArrayList[vertexNumber];
             for (int i = 0; i < graphMatrix.length; i++) {
@@ -77,13 +70,48 @@ public class Graph {
             }
         }
 
+        /**
+         *  Adds an edge for the building Graph. At least one edge must be added.
+         *  @param startVertex edge start. Must be in range [0, vertexNumber - 1]
+         *  @param endVertex edge end. Must be in range [0, vertexNumber - 1] and
+         *  not be equal to startVertex
+         *  @param weight edge weight. Must be a positive integer.
+         *
+         *  @throws IllegalArgumentException in case of incorrect parameters.
+         *  @return Builder object which can be safely used to construct Graph object
+         *  calling its build() method.
+         */
         public Builder edge(int startVertex, int endVertex, int weight) {
+            if (startVertex < 0 || endVertex < 0) {
+                throw new IllegalArgumentException(
+                        "Vertices must be positive integers.");
+            }
+            if (startVertex > vertexNumber - 1 || endVertex > vertexNumber - 1) {
+                throw new IllegalArgumentException(
+                        "Vertex is out of range: [" + 0 + ", " + (vertexNumber - 1) + "].");
+            }
+            if (startVertex == endVertex) {
+                throw new IllegalArgumentException(
+                        "Vertex cannot be connected to itself.");
+            }
+            if (weight <= 0) {
+                throw new IllegalArgumentException(
+                        "Weight must have a positive value.");
+            }
             graphMatrix[startVertex].set(endVertex, weight);
             this.edgeNumber++;
             return this;
         }
 
+        /**
+         * @throws IllegalStateException if no edges have been added.
+         * @return correctly constructed Graph object.
+         */
         public Graph build() {
+            if (edgeNumber < 1) {
+                throw new IllegalStateException("Graph must have at least one edge.");
+            }
+
             return new Graph(this);
         }
     }
@@ -92,19 +120,6 @@ public class Graph {
         this.vertexNumber = builder.vertexNumber;
         this.edgeNumber = builder.edgeNumber;
         this.graphMatrix = builder.graphMatrix;
-        init();
-    }
-
-    private void init() {
-        //ни одна вершина не пройдена
-        used = new boolean[vertexNumber];
-        Arrays.fill(used, false);
-        //ни одна вершина не имеет предыдущей вершины
-        previous = new int[vertexNumber];
-        Arrays.fill(previous, -1);
-        //расстояния до всех вершин равны бесконечности
-        distance = new int[vertexNumber];
-        Arrays.fill(distance, INF);
     }
 
     @Override

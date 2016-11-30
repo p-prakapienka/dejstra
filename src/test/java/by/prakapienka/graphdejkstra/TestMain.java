@@ -1,6 +1,5 @@
 package by.prakapienka.graphdejkstra;
 
-import by.prakapienka.graphdejkstra.util.ConsoleHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,9 +16,14 @@ public class TestMain {
 
         LOG.info("Processing graph:\n{}", graph);
 
-        GraphProcessor.process(graph, startVertex);
+        GraphResult result =  GraphProcessor.process(graph, startVertex);
 
-        ConsoleHelper.printData(graph, startVertex);
+        System.out.println("Start vertex " + result.getStartVertex());
+        for (int i = 0; i < graph.getVertexNumber(); i++) {
+            System.out.println("Vertex " + i + " distance: " + result.getDistanceToVertex(i));
+            result.getWayToVertex(i).forEach(v -> System.out.print("->" + v));
+            System.out.println();
+        }
     }
 
 }
