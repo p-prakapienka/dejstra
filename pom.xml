@@ -23,7 +23,7 @@
         <finalName>GraphDejkstra</finalName>
         <defaultGoal>package</defaultGoal>
         <plugins>
-                             <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
@@ -37,6 +37,12 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>20.0</version>
+        </dependency>
+
         <!-- Logging -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -48,7 +54,6 @@
             <artifactId>log4j-core</artifactId>
             <version>2.7</version>
         </dependency>
-
 
         <!--Test-->
         <dependency>

@@ -1,5 +1,7 @@
 package by.prakapienka.graphdejkstra;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.List;
 public final class Graph {
 
     private final int vertexNumber;
-    private int edgeNumber;
+    private final int edgeNumber;
 
     private final List<Integer>[] graphMatrix;
 
@@ -36,10 +38,15 @@ public final class Graph {
     }
 
     /**
-     *  @return edge weights matrix
+     *  @return copy of edge weights matrix
      */
+    @SuppressWarnings("unchecked")
     public List<Integer>[] getGraphMatrix() {
-        return graphMatrix;
+        List<Integer>[] copyGraphMatrix = new ArrayList[graphMatrix.length];
+        for (int i = 0; i < copyGraphMatrix.length; i++) {
+            copyGraphMatrix[i] = ImmutableList.copyOf(graphMatrix[i]);
+        }
+        return copyGraphMatrix;
     }
 
     /**
