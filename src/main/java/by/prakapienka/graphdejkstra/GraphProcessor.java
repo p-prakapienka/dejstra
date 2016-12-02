@@ -10,8 +10,6 @@ import java.util.Arrays;
  *  to find the shortest way from the specified vertex to all it is connected with.
  *  The result of this process is a GraphResult object with all the needed data in it.
  *
- *  Not thread safe!!!
- *
  *  @author Paviel Prakapienka
  */
 public class GraphProcessor {
@@ -19,10 +17,6 @@ public class GraphProcessor {
     private static final Logger LOG = LoggerFactory.getLogger(GraphProcessor.class);
 
     private final static int INF = Integer.MAX_VALUE / 2;
-
-    private static boolean[] used; //массив для хранения информации о пройденных и не пройденных вершинах
-    private static int[] distance; //массив для хранения расстояний от стартовой вершины
-    private static int[] previous; //массив предков, необходимых для восстановления кратчайшего пути из стартовой вершины
 
     /**
      *  Root method for graph processing. Method finds the ways and distances from the
@@ -46,7 +40,12 @@ public class GraphProcessor {
         }
         LOG.info("Start processing from vertex {}\n for {}", startVertex, graph);
 
-        prepareToProcess(vertexNumber);
+        boolean[] used = new boolean[vertexNumber];
+        Arrays.fill(used, false);
+        int[] distance = new int[vertexNumber];
+        Arrays.fill(distance, INF);
+        int[] previous = new int[vertexNumber];
+        Arrays.fill(previous, -1);
 
         distance[startVertex] = 0; //кратчайшее расстояние до стартовой вершины равно 0
         for (int i = 0; i < vertexNumber; i++) {
@@ -89,23 +88,8 @@ public class GraphProcessor {
             LOG.error("Result is null.");
         }
         LOG.info("Clearing processor state.");
-        used = null;
-        distance = null;
-        previous = null;
+
         return result;
-    }
-
-
-    private static void prepareToProcess(int vertexNumber) {
-        //ни одна вершина не пройдена
-        used = new boolean[vertexNumber];
-        Arrays.fill(used, false);
-        //ни одна вершина не имеет предыдущей вершины
-        previous = new int[vertexNumber];
-        Arrays.fill(previous, -1);
-        //расстояния до всех вершин равны бесконечности
-        distance = new int[vertexNumber];
-        Arrays.fill(distance, INF);
     }
 
     private GraphProcessor() {}

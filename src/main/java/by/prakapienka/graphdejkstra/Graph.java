@@ -44,7 +44,7 @@ public final class Graph {
     public List<Integer>[] getGraphMatrix() {
         List<Integer>[] copyGraphMatrix = new ArrayList[graphMatrix.length];
         for (int i = 0; i < copyGraphMatrix.length; i++) {
-            copyGraphMatrix[i] = ImmutableList.copyOf(graphMatrix[i]);
+            copyGraphMatrix[i] = new ArrayList<>(graphMatrix[i]);
         }
         return copyGraphMatrix;
     }
